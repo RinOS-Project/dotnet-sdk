@@ -77,7 +77,8 @@ namespace Microsoft.NET.Build.Tasks
 
         private async System.Threading.Tasks.Task ExecuteWithRetry()
         {
-            OSPlatform targetOS = RuntimeIdentifier.StartsWith("win") ? OSPlatform.Windows :
+            OSPlatform targetOS = RuntimeIdentifier.StartsWith("rinos") ? OSPlatform.Create("RINOS") :
+                                  RuntimeIdentifier.StartsWith("win") ? OSPlatform.Windows :
                                   RuntimeIdentifier.StartsWith("osx") ? OSPlatform.OSX :
                                   RuntimeIdentifier.StartsWith("freebsd") ? OSPlatform.Create("FREEBSD") :
                                   RuntimeIdentifier.StartsWith("openbsd") ? OSPlatform.Create("OPENBSD") :

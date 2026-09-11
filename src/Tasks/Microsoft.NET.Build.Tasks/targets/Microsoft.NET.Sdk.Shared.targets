@@ -24,13 +24,16 @@ Copyright (c) .NET Foundation. All rights reserved.
   </PropertyGroup>
   
   <PropertyGroup>
+    <_NativeLibraryPrefix Condition="'$(_NativeLibraryPrefix)' == '' and $(RuntimeIdentifier.StartsWith('rinos'))"></_NativeLibraryPrefix>
     <_NativeLibraryPrefix Condition="'$(_NativeLibraryPrefix)' == '' and !$(RuntimeIdentifier.StartsWith('win'))">lib</_NativeLibraryPrefix>
 
+    <_NativeLibraryExtension Condition="'$(_NativeLibraryExtension)' == '' and $(RuntimeIdentifier.StartsWith('rinos'))">.rll</_NativeLibraryExtension>
     <_NativeLibraryExtension Condition="'$(_NativeLibraryExtension)' == '' and $(RuntimeIdentifier.StartsWith('win'))">.dll</_NativeLibraryExtension>
     <_NativeLibraryExtension Condition="'$(_NativeLibraryExtension)' == '' and $(RuntimeIdentifier.StartsWith('osx'))">.dylib</_NativeLibraryExtension>
     <_NativeLibraryExtension Condition="'$(_NativeLibraryExtension)' == ''">.so</_NativeLibraryExtension>
 
-    <_NativeExecutableExtension Condition="'$(_NativeExecutableExtension)' == '' and ($(RuntimeIdentifier.StartsWith('win')) or $(DefaultAppHostRuntimeIdentifier.StartsWith('win')))">.exe</_NativeExecutableExtension>
+    <_NativeExecutableExtension Condition="'$(_NativeExecutableExtension)' == '' and ($(RuntimeIdentifier.StartsWith('rinos')) or $(DefaultAppHostRuntimeIdentifier.StartsWith('rinos')))">.rin</_NativeExecutableExtension>
+    <_NativeExecutableExtension Condition="'$(_NativeExecutableExtension)' == '' and ($(RuntimeIdentifier.StartsWith('win')) or $(DefaultAppHostRuntimeIdentifier.StartsWith('win'))) ">.exe</_NativeExecutableExtension>
     <_ComHostLibraryExtension Condition="'$(_ComHostLibraryExtension)' == '' and ($(RuntimeIdentifier.StartsWith('win')) or $(DefaultAppHostRuntimeIdentifier.StartsWith('win')))">.dll</_ComHostLibraryExtension>
     <_IjwHostLibraryExtension Condition="'$(_IjwHostLibraryExtension)' == '' and ($(RuntimeIdentifier.StartsWith('win')) or $(DefaultAppHostRuntimeIdentifier.StartsWith('win')))">.dll</_IjwHostLibraryExtension>
 

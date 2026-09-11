@@ -273,6 +273,7 @@
         solaris-x64;
         openbsd-x64;
         openbsd-arm64;
+        rinos-x64;
         " />
 
       <Net110RuntimePackRids Include="
@@ -292,6 +293,7 @@
         openbsd-x64;
         openbsd-arm64;
         browser-wasm;
+        rinos-x64;
         " />
 
       <NetCoreAppHostRids Include="@(Net110AppHostRids)" />

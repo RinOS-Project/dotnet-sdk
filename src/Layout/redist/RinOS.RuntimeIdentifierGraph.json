@@ -1,0 +1,14 @@
+{
+  "runtimes": {
+    "any": {},
+    "base": {
+      "#import": ["any"]
+    },
+    "rinos": {
+      "#import": ["base"]
+    },
+    "rinos-x64": {
+      "#import": ["rinos"]
+    }
+  }
+}

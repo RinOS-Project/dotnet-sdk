@@ -9,6 +9,10 @@ namespace Microsoft.NET.Build.Tasks
     {
         public static string ForRuntimeIdentifier(string runtimeIdentifier)
         {
+            if (runtimeIdentifier.StartsWith("rinos", StringComparison.OrdinalIgnoreCase))
+            {
+                return ".rin";
+            }
             if (runtimeIdentifier.StartsWith("win", StringComparison.OrdinalIgnoreCase))
             {
                 return ".exe";

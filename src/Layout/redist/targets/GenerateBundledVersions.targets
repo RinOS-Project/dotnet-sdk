@@ -630,7 +630,7 @@
       <WindowsDesktop50RuntimePackRids Include="@(WindowsDesktop31RuntimePackRids);win-arm64" />
       <WindowsDesktopRuntimePackRids Include="@(WindowsDesktop50RuntimePackRids)" />
 
-      <_KnownRuntimeIdentifierPlatforms Include="any;aot;freebsd;openbsd;illumos;solaris;haiku;unix" />
+      <_KnownRuntimeIdentifierPlatforms Include="any;aot;freebsd;openbsd;illumos;solaris;haiku;unix;rinos" />
       <_ExcludedKnownRuntimeIdentifierPlatforms Include="tizen.4.0.0;tizen.5.0.0" Condition="'$(DotNetBuildSourceOnly)' != 'true'" />
       <_ExcludedKnownRuntimeIdentifierPlatforms Include="tizen.4.0.0" Condition="'$(DotNetBuildSourceOnly)' == 'true' and !$(ProductMonikerRid.StartsWith('tizen.4.0.0-'))" />
       <_ExcludedKnownRuntimeIdentifierPlatforms Include="tizen.5.0.0" Condition="'$(DotNetBuildSourceOnly)' == 'true' and !$(ProductMonikerRid.StartsWith('tizen.5.0.0-'))" />

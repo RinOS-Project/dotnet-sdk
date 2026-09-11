@@ -10,13 +10,25 @@
       <PortableRuntimeIdentifierGraphTargetFile>$(OutputPath)PortableRuntimeIdentifierGraph.json</PortableRuntimeIdentifierGraphTargetFile>
     </PropertyGroup>
 
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\RinOS.RuntimeIdentifierGraph.json"
+          DestinationFiles="$(OutputPath)RuntimeIdentifierGraph.json"
+          SkipUnchangedFiles="true"
+          Condition="'$(ProductMonikerRid)' == 'rinos-x64'" />
+
     <Copy SourceFiles="$(NuGetPackageRoot)/microsoft.netcore.platforms/$(MicrosoftNETCorePlatformsPackageVersion)/runtime.json"
           DestinationFiles="$(OutputPath)RuntimeIdentifierGraph.json"
-          SkipUnchangedFiles="true" />
+          SkipUnchangedFiles="true"
+          Condition="'$(ProductMonikerRid)' != 'rinos-x64'" />
+
+    <Copy SourceFiles="$(MSBuildThisFileDirectory)..\RinOS.RuntimeIdentifierGraph.json"
+          DestinationFiles="$(PortableRuntimeIdentifierGraphTargetFile)"
+          SkipUnchangedFiles="true"
+          Condition="'$(ProductMonikerRid)' == 'rinos-x64'" />
 
     <Copy SourceFiles="$(NuGetPackageRoot)/microsoft.netcore.platforms/$(MicrosoftNETCorePlatformsPackageVersion)/PortableRuntimeIdentifierGraph.json"
           DestinationFiles="$(PortableRuntimeIdentifierGraphTargetFile)"
-          SkipUnchangedFiles="true" />
+          SkipUnchangedFiles="true"
+          Condition="'$(ProductMonikerRid)' != 'rinos-x64'" />
   </Target>
 
   <Target Name="GenerateSdkRuntimeIdentifierChain"

@@ -4,6 +4,7 @@
 using System.CommandLine;
 using Microsoft.DotNet.Cli.Commands.New;
 using Microsoft.TemplateEngine.Abstractions;
+using Microsoft.TemplateEngine.Cli.Alias;
 using Microsoft.TemplateEngine.Edge.Settings;
 
 namespace Microsoft.TemplateEngine.Cli.Commands
@@ -16,8 +17,28 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             IEngineEnvironmentSettings environmentSettings,
             TemplatePackageManager templatePackageManager,
             ParseResult parseResult,
-            CancellationToken cancellationToken) => throw new NotImplementedException();
+            CancellationToken cancellationToken)
+        {
+            HashSet<string> reservedNames = new(StringComparer.OrdinalIgnoreCase);
+            foreach (Command command in args.RootCommand.Subcommands)
+            {
+                reservedNames.Add(command.Name);
+                reservedNames.UnionWith(command.Aliases);
+            }
 
-        protected override AliasAddCommandArgs ParseContext(ParseResult parseResult) => new(parseResult);
+            IReadOnlyList<ITemplateInfo> templates = await templatePackageManager.GetTemplatesAsync(cancellationToken).ConfigureAwait(false);
+            foreach (ITemplateInfo template in templates)
+            {
+                reservedNames.UnionWith(template.ShortNameList);
+            }
+
+            return AliasSupport.ManipulateAlias(
+                new AliasRegistry(environmentSettings),
+                args.AliasName,
+                args.AliasTokens,
+                reservedNames);
+        }
+
+        protected override AliasAddCommandArgs ParseContext(ParseResult parseResult) => new(Definition, parseResult);
     }
 }

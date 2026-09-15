@@ -102,6 +102,11 @@ namespace Microsoft.TemplateEngine.Cli.Alias
 
             do
             {
+                if (expandedTokens.Count == 0)
+                {
+                    return true;
+                }
+
                 string candidateAliasName = expandedTokens[0];
 
                 if (aliases.TryGetValue(candidateAliasName, out IReadOnlyList<string>? aliasExpansion))

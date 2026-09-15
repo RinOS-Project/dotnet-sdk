@@ -9,6 +9,7 @@ using Microsoft.DotNet.Cli.Utils.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Abstractions.TemplatePackage;
+using Microsoft.TemplateEngine.Cli.Alias;
 using Microsoft.TemplateEngine.Cli.TabularOutput;
 using Microsoft.TemplateEngine.Edge.Settings;
 using Microsoft.TemplateEngine.Utils;
@@ -30,14 +31,20 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             Definition.InstantiateOptions.NoUpdateCheckOption
         ];
 
-        internal static Task<NewCommandStatus> ExecuteAsync(
+        internal static async Task<NewCommandStatus> ExecuteAsync(
             NewCommandArgs newCommandArgs,
             IEngineEnvironmentSettings environmentSettings,
             TemplatePackageManager templatePackageManager,
             ParseResult parseResult,
             CancellationToken cancellationToken)
         {
-            return ExecuteIntAsync(InstantiateCommandArgs.FromNewCommandArgs(newCommandArgs), environmentSettings, templatePackageManager, parseResult, cancellationToken);
+            InstantiateCommandArgs instantiateArgs = InstantiateCommandArgs.FromNewCommandArgs(newCommandArgs);
+            if (!TryExpandAliases(instantiateArgs, environmentSettings, parseResult, out instantiateArgs))
+            {
+                return NewCommandStatus.InvalidOption;
+            }
+
+            return await ExecuteIntAsync(instantiateArgs, environmentSettings, templatePackageManager, parseResult, cancellationToken).ConfigureAwait(false);
         }
 
         internal static async Task<IEnumerable<TemplateGroup>> GetTemplateGroupsAsync(
@@ -153,12 +160,38 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             ParseResult parseResult,
             CancellationToken cancellationToken)
         {
+            if (!TryExpandAliases(instantiateArgs, environmentSettings, parseResult, out instantiateArgs))
+            {
+                return NewCommandStatus.InvalidOption;
+            }
+
             NewCommandStatus status = await ExecuteIntAsync(instantiateArgs, environmentSettings, templatePackageManager, parseResult, cancellationToken).ConfigureAwait(false);
             await CheckTemplatesWithSubCommandName(instantiateArgs, templatePackageManager, cancellationToken).ConfigureAwait(false);
             return status;
         }
 
         protected override InstantiateCommandArgs ParseContext(ParseResult parseResult) => new(this, parseResult);
+
+        private static bool TryExpandAliases(
+            InstantiateCommandArgs instantiateArgs,
+            IEngineEnvironmentSettings environmentSettings,
+            ParseResult parseResult,
+            out InstantiateCommandArgs expandedArgs)
+        {
+            expandedArgs = instantiateArgs;
+            AliasRegistry aliasRegistry = new(environmentSettings);
+            if (!AliasSupport.TryExpandAliases(aliasRegistry, instantiateArgs.TokensToInvoke, out IReadOnlyList<string> expandedTokens))
+            {
+                return false;
+            }
+
+            if (!expandedTokens.SequenceEqual(instantiateArgs.TokensToInvoke, StringComparer.Ordinal))
+            {
+                expandedArgs = InstantiateCommandArgs.FromTokens(expandedTokens, parseResult);
+            }
+
+            return true;
+        }
 
         private static async Task<NewCommandStatus> ExecuteIntAsync(
             InstantiateCommandArgs instantiateArgs,

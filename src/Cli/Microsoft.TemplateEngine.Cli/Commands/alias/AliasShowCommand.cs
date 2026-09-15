@@ -4,6 +4,7 @@
 using System.CommandLine;
 using Microsoft.DotNet.Cli.Commands.New;
 using Microsoft.TemplateEngine.Abstractions;
+using Microsoft.TemplateEngine.Cli.Alias;
 using Microsoft.TemplateEngine.Edge.Settings;
 
 namespace Microsoft.TemplateEngine.Cli.Commands
@@ -16,8 +17,13 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             IEngineEnvironmentSettings environmentSettings,
             TemplatePackageManager templatePackageManager,
             ParseResult parseResult,
-            CancellationToken cancellationToken) => throw new NotImplementedException();
+            CancellationToken cancellationToken)
+            => Task.FromResult(AliasSupport.DisplayAliasValues(
+                environmentSettings,
+                new AliasRegistry(environmentSettings),
+                args.AliasName,
+                Definition.Name));
 
-        protected override AliasShowCommandArgs ParseContext(ParseResult parseResult) => new(parseResult);
+        protected override AliasShowCommandArgs ParseContext(ParseResult parseResult) => new(Definition, parseResult);
     }
 }

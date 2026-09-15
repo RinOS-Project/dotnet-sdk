@@ -56,7 +56,7 @@ namespace Microsoft.TemplateEngine.Cli.Alias
             }
 
             //ensure loaded sets aliases
-            Dictionary<string, IReadOnlyList<string>> aliasesWithCandidate = new(_aliases!.CommandAliases);
+            Dictionary<string, IReadOnlyList<string>> aliasesWithCandidate = new(_aliases!.CommandAliases, StringComparer.OrdinalIgnoreCase);
             bool aliasAlreadyExists = aliasesWithCandidate.ContainsKey(aliasName);
             aliasesWithCandidate[aliasName] = aliasTokens;
             if (!TryExpandCommandAliases(aliasesWithCandidate, aliasTokens, out IReadOnlyList<string>? expandedInputTokens))
@@ -97,7 +97,7 @@ namespace Microsoft.TemplateEngine.Cli.Alias
         private static bool TryExpandCommandAliases(IReadOnlyDictionary<string, IReadOnlyList<string>> aliases, IReadOnlyList<string> inputTokens, out IReadOnlyList<string>? expandedTokens)
         {
             bool expansionOccurred = false;
-            HashSet<string> seenAliases = new();
+            HashSet<string> seenAliases = new(StringComparer.OrdinalIgnoreCase);
             expandedTokens = new List<string>(inputTokens);
 
             do

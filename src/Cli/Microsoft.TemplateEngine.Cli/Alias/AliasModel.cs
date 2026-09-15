@@ -22,7 +22,7 @@ namespace Microsoft.TemplateEngine.Cli.Alias
 
         internal void AddCommandAlias(string aliasName, IReadOnlyList<string> aliasTokens)
         {
-            CommandAliases.Add(aliasName, aliasTokens);
+            CommandAliases[aliasName] = aliasTokens;
         }
 
         internal bool TryRemoveCommandAlias(string aliasName, out IReadOnlyList<string>? aliasTokens)

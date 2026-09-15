@@ -57,6 +57,7 @@ namespace Microsoft.TemplateEngine.Cli.Alias
 
             //ensure loaded sets aliases
             Dictionary<string, IReadOnlyList<string>> aliasesWithCandidate = new(_aliases!.CommandAliases);
+            bool aliasAlreadyExists = aliasesWithCandidate.ContainsKey(aliasName);
             aliasesWithCandidate[aliasName] = aliasTokens;
             if (!TryExpandCommandAliases(aliasesWithCandidate, aliasTokens, out IReadOnlyList<string>? expandedInputTokens))
             {
@@ -65,7 +66,10 @@ namespace Microsoft.TemplateEngine.Cli.Alias
 
             _aliases.AddCommandAlias(aliasName, aliasTokens);
             Save();
-            return new AliasManipulationResult(AliasManipulationStatus.Created, aliasName, aliasTokens);
+            return new AliasManipulationResult(
+                aliasAlreadyExists ? AliasManipulationStatus.Updated : AliasManipulationStatus.Created,
+                aliasName,
+                aliasTokens);
         }
 
         // Attempts to expand aliases on the input string, using the aliases in _aliases

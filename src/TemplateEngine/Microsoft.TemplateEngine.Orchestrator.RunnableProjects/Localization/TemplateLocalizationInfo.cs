@@ -11,9 +11,10 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Localization
     {
         private readonly List<IValidationEntry> _validationEntries = new();
 
-        public TemplateLocalizationInfo(CultureInfo locale, LocalizationModel model, IFile file)
+        public TemplateLocalizationInfo(CultureInfo locale, string identity, LocalizationModel model, IFile file)
         {
             Locale = locale;
+            Identity = identity;
             Model = model;
             File = file;
         }
@@ -22,7 +23,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Localization
 
         string ILocalizationLocator.ConfigPlace => File.FullPath;
 
-        string ILocalizationLocator.Identity => throw new NotImplementedException();
+        string ILocalizationLocator.Identity => Identity;
 
         string? ILocalizationLocator.Author => Model.Author;
 
@@ -37,6 +38,8 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Localization
         public IReadOnlyList<IValidationEntry> ValidationErrors => _validationEntries;
 
         internal CultureInfo Locale { get; }
+
+        internal string Identity { get; }
 
         internal LocalizationModel Model { get; }
 

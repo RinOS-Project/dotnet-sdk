@@ -33,7 +33,8 @@ internal class AuthorsConverter : JsonConverter<NugetSearchApiAuthorsSerializabl
     public override void Write(Utf8JsonWriter writer, NugetSearchApiAuthorsSerializable value,
         JsonSerializerOptions options)
     {
-        // only deserialize is used
-        throw new NotImplementedException();
+        // The search endpoint currently returns either a scalar or an array,
+        // but emitting the normalized array keeps round-tripping deterministic.
+        JsonSerializer.Serialize(writer, value?.Authors ?? [], options);
     }
 }

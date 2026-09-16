@@ -19,7 +19,10 @@ public static class TemplateParameterPrecedenceExtensions
             TemplateParameterPriority.Required => PrecedenceDefinition.Required,
             TemplateParameterPriority.Optional => PrecedenceDefinition.Optional,
             TemplateParameterPriority.Implicit => PrecedenceDefinition.Implicit,
-            TemplateParameterPriority.Suggested => throw new NotImplementedException(),
+            // Suggested was deprecated without a distinct precedence. Preserve the
+            // legacy non-required behavior as Optional instead of throwing during
+            // projection from old template metadata.
+            TemplateParameterPriority.Suggested => PrecedenceDefinition.Optional,
             _ => throw new ArgumentOutOfRangeException(nameof(priority), priority, null),
         };
     }

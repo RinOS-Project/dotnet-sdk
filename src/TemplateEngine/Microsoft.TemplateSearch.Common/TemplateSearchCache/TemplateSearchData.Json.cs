@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.TemplateEngine.Abstractions;
 
 namespace Microsoft.TemplateSearch.Common
@@ -39,9 +40,13 @@ namespace Microsoft.TemplateSearch.Common
         #region JsonConverter
         private class TemplateSearchDataJsonConverter : System.Text.Json.Serialization.JsonConverter<TemplateSearchData>
         {
-            //falls back to default de-serializer if not implemented
             public override TemplateSearchData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-                => throw new NotImplementedException();
+            {
+                JsonObject? jsonObject = JsonNode.Parse(ref reader) as JsonObject;
+                return jsonObject is not null
+                    ? new TemplateSearchData(jsonObject, NullLogger.Instance)
+                    : throw new JsonException("Template search data must be a JSON object.");
+            }
 
 #if NET7_0_OR_GREATER
             [UnconditionalSuppressMessage("AOT", "IL2026:RequiresUnreferencedCode", Justification = "BaselineInfo and AdditionalData are serialized with known types.")]

@@ -163,7 +163,8 @@ namespace Microsoft.TemplateSearch.TemplateDiscovery.AdditionalData
 
         private class CustomJsonConverter : System.Text.Json.Serialization.JsonConverter<CliHostTemplateData>
         {
-            public override CliHostTemplateData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException();
+            public override CliHostTemplateData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+                => new CliHostTemplateData(JsonNode.Parse(ref reader) as JsonObject);
 
             public override void Write(Utf8JsonWriter writer, CliHostTemplateData value, JsonSerializerOptions options)
             {

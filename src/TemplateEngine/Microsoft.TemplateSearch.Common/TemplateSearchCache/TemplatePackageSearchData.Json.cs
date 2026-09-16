@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.TemplateEngine;
 
 namespace Microsoft.TemplateSearch.Common
@@ -68,7 +69,12 @@ namespace Microsoft.TemplateSearch.Common
         private class TemplatePackageSearchDataJsonConverter : System.Text.Json.Serialization.JsonConverter<TemplatePackageSearchData>
         {
             public override TemplatePackageSearchData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-                => throw new NotImplementedException();
+            {
+                JsonObject? jsonObject = JsonNode.Parse(ref reader) as JsonObject;
+                return jsonObject is not null
+                    ? new TemplatePackageSearchData(jsonObject, NullLogger.Instance)
+                    : throw new JsonException("Template package search data must be a JSON object.");
+            }
 
 #if NET7_0_OR_GREATER
             [UnconditionalSuppressMessage("AOT", "IL2026:RequiresUnreferencedCode", Justification = "Templates and AdditionalData are serialized with known types.")]

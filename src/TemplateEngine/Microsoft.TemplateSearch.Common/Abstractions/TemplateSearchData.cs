@@ -99,7 +99,7 @@ namespace Microsoft.TemplateSearch.Common
         IReadOnlyDictionary<string, IBaselineInfo> ITemplateMetadata.BaselineInfo => TemplateInfo.BaselineInfo;
 
         [Obsolete]
-        bool ITemplateInfo.HasScriptRunningPostActions { get => TemplateInfo.HasScriptRunningPostActions; set => throw new NotImplementedException(); }
+        bool ITemplateInfo.HasScriptRunningPostActions { get => TemplateInfo.HasScriptRunningPostActions; set => TemplateInfo.HasScriptRunningPostActions = value; }
 
         IReadOnlyList<Guid> ITemplateMetadata.PostActions => TemplateInfo.PostActions;
 

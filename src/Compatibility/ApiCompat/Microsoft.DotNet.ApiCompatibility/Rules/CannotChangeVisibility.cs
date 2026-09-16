@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System;
 using Microsoft.CodeAnalysis;
 
 namespace Microsoft.DotNet.ApiCompatibility.Rules
@@ -27,6 +28,17 @@ namespace Microsoft.DotNet.ApiCompatibility.Rules
             _ => a,
         };
 
+        private static int AccessibilityRank(Accessibility accessibility)
+            => accessibility switch
+            {
+                Accessibility.Private => 0,
+                Accessibility.ProtectedAndInternal => 1,
+                Accessibility.Protected or Accessibility.Internal => 2,
+                Accessibility.ProtectedOrInternal => 3,
+                Accessibility.Public => 4,
+                _ => throw new ArgumentOutOfRangeException(nameof(accessibility), accessibility, "ApiCompat requires a declared accessibility value."),
+            };
+
         private int CompareAccessibility(Accessibility a, Accessibility b)
         {
             if (!_settings.IncludeInternalSymbols)
@@ -40,18 +52,7 @@ namespace Microsoft.DotNet.ApiCompatibility.Rules
                 return 0;
             }
 
-            return (a, b) switch
-            {
-                (Accessibility.Public, _) => 1,
-                (_, Accessibility.Public) => -1,
-                (Accessibility.ProtectedOrInternal, _) => 1,
-                (_, Accessibility.ProtectedOrInternal) => -1,
-                (Accessibility.Protected or Accessibility.Internal, _) => 1,
-                (_, Accessibility.Protected or Accessibility.Internal) => -1,
-                (Accessibility.ProtectedAndInternal, _) => 1,
-                (_, Accessibility.ProtectedAndInternal) => -1,
-                _ => throw new NotImplementedException(),
-            };
+            return AccessibilityRank(a).CompareTo(AccessibilityRank(b));
         }
 
         private void RunOnSymbol(ISymbol? left,

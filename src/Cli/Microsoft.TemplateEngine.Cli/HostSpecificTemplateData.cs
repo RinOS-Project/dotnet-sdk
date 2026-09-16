@@ -207,7 +207,8 @@ namespace Microsoft.TemplateEngine.Cli
 
         private class HostSpecificTemplateDataJsonConverter : JsonConverter<HostSpecificTemplateData>
         {
-            public override HostSpecificTemplateData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) => throw new NotImplementedException();
+            public override HostSpecificTemplateData Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+                => new HostSpecificTemplateData(JsonNode.Parse(ref reader) as JsonObject);
 
             public override void Write(Utf8JsonWriter writer, HostSpecificTemplateData value, JsonSerializerOptions options)
             {

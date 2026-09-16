@@ -13,6 +13,7 @@ public class BuiltInCommand : ICommand
     private readonly IBuiltInCommandEnvironment _environment;
     private readonly StreamForwarder _stdOut;
     private readonly StreamForwarder _stdErr;
+    private readonly Dictionary<string, string?> _environmentVariables = new(StringComparer.OrdinalIgnoreCase);
     private string? _workingDirectory;
 
     public string CommandName { get; }
@@ -39,9 +40,16 @@ public class BuiltInCommand : ICommand
         TextWriter originalConsoleOut = _environment.GetConsoleOut();
         TextWriter originalConsoleError = _environment.GetConsoleError();
         string originalWorkingDirectory = _environment.GetWorkingDirectory();
+        Dictionary<string, string?> originalEnvironment = new(StringComparer.OrdinalIgnoreCase);
 
         try
         {
+            foreach (KeyValuePair<string, string?> variable in _environmentVariables)
+            {
+                originalEnvironment[variable.Key] = Environment.GetEnvironmentVariable(variable.Key);
+                Environment.SetEnvironmentVariable(variable.Key, variable.Value);
+            }
+
             // redirecting the standard out and error so we can forward
             // the output to the caller
             using (BlockingMemoryStream outStream = new())
@@ -78,6 +86,11 @@ public class BuiltInCommand : ICommand
             _environment.SetConsoleOut(originalConsoleOut);
             _environment.SetConsoleError(originalConsoleError);
             _environment.SetWorkingDirectory(originalWorkingDirectory);
+
+            foreach (KeyValuePair<string, string?> variable in originalEnvironment)
+            {
+                Environment.SetEnvironmentVariable(variable.Key, variable.Value);
+            }
 
             Reporter.Reset();
         }
@@ -163,25 +176,57 @@ public class BuiltInCommand : ICommand
 
     public ICommand EnvironmentVariable(string name, string? value)
     {
-        throw new NotImplementedException();
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new ArgumentException("Environment variable name must not be empty.", nameof(name));
+        }
+        _environmentVariables[name] = value;
+        return this;
     }
 
     public ICommand ForwardStdErr(TextWriter? to = null, bool onlyIfVerbose = false, bool ansiPassThrough = true)
     {
-        throw new NotImplementedException();
+        if (!onlyIfVerbose || CommandLoggingContext.IsVerbose)
+        {
+            if (to is null)
+            {
+                _stdErr.ForwardTo(writeLine: Reporter.Error.WriteLine);
+                EnvironmentVariable(CommandLoggingContext.Variables.AnsiPassThru, ansiPassThrough.ToString());
+            }
+            else
+            {
+                _stdErr.ForwardTo(writeLine: to.WriteLine);
+            }
+        }
+
+        return this;
     }
 
     public ICommand ForwardStdOut(TextWriter? to = null, bool onlyIfVerbose = false, bool ansiPassThrough = true)
     {
-        throw new NotImplementedException();
+        if (!onlyIfVerbose || CommandLoggingContext.IsVerbose)
+        {
+            if (to is null)
+            {
+                _stdOut.ForwardTo(writeLine: Reporter.Output.WriteLine);
+                EnvironmentVariable(CommandLoggingContext.Variables.AnsiPassThru, ansiPassThrough.ToString());
+            }
+            else
+            {
+                _stdOut.ForwardTo(writeLine: to.WriteLine);
+            }
+        }
+
+        return this;
     }
+
     public ICommand SetCommandArgs(string commandArgs)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException("BuiltInCommand arguments are configured as an argument sequence.");
     }
 
     public ICommand StandardOutputEncoding(Encoding encoding)
     {
-        throw new NotImplementedException();
+        throw new NotSupportedException("BuiltInCommand uses the current process console encoding.");
     }
 }

@@ -97,7 +97,20 @@ namespace Analyzer.Utilities.PooledObjects
         /// </summary>
         public bool Contains(T item) => _dictionary.ContainsKey(item);
 
-        public void CopyTo(T[] array, int arrayIndex) => throw new NotImplementedException();
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (array is null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
+
+            _dictionary.Keys.CopyTo(array, arrayIndex);
+        }
 
         /// <summary>
         /// Obtain an enumerator that iterates through the elements in the set.

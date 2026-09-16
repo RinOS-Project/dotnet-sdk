@@ -724,7 +724,7 @@ namespace Analyzer.Utilities
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                throw new NotImplementedException();
+                return new EnumerableCore(GetEnumerator());
             }
         }
 
@@ -830,7 +830,7 @@ namespace Analyzer.Utilities
 
                 void IEnumerator.Reset()
                 {
-                    throw new NotImplementedException();
+                    throw new NotSupportedException();
                 }
             }
 
@@ -841,7 +841,7 @@ namespace Analyzer.Utilities
 
             IEnumerator IEnumerable.GetEnumerator()
             {
-                throw new NotImplementedException();
+                return new EnumerableCore(GetEnumerator());
             }
         }
 
@@ -936,7 +936,7 @@ namespace Analyzer.Utilities
 
             void IEnumerator.Reset()
             {
-                throw new NotImplementedException();
+                throw new NotSupportedException();
             }
         }
 #pragma warning restore CA1063, CA1816 // Implement IDisposable Correctly
@@ -949,7 +949,7 @@ namespace Analyzer.Utilities
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new EnumerableCore(GetEnumerator());
         }
 
         private int HeightApprox()

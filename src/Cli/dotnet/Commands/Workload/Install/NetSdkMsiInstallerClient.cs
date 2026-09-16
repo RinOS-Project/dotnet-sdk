@@ -1128,5 +1128,6 @@ internal partial class NetSdkMsiInstallerClient : MsiInstallerBase, IInstaller
     // This method should never be called for this kind of installer. It is challenging to get this information from an MSI
     // and totally unnecessary as the information is identical from a file-based installer. It was added to IInstaller only
     // to facilitate testing. As a consequence, it does not need to be implemented.
-    public WorkloadSet GetWorkloadSetContents(string workloadVersion) => throw new NotImplementedException();
+    public WorkloadSet GetWorkloadSetContents(string workloadVersion)
+        => throw new NotSupportedException("MSI installers do not expose workload-set contents.");
 }

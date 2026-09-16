@@ -186,7 +186,7 @@ internal sealed partial class FrameworkPackages : IEnumerable<KeyValuePair<strin
 
     IEnumerator<KeyValuePair<string, NuGetVersion>> IEnumerable<KeyValuePair<string, NuGetVersion>>.GetEnumerator() => this.Packages.GetEnumerator();
 
-    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
+    IEnumerator IEnumerable.GetEnumerator() => Packages.GetEnumerator();
 
     internal static class FrameworkNames
     {

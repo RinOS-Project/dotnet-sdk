@@ -71,9 +71,9 @@ public sealed class BlockingMemoryStream : Stream
     public override bool CanRead => true;
     public override bool CanSeek => false;
     public override bool CanWrite => true;
-    public override long Length { get { throw new NotImplementedException(); } }
-    public override long Position { get { throw new NotImplementedException(); } set { throw new NotImplementedException(); } }
+    public override long Length => throw new NotSupportedException("BlockingMemoryStream is not seekable.");
+    public override long Position { get => throw new NotSupportedException("BlockingMemoryStream is not seekable."); set => throw new NotSupportedException("BlockingMemoryStream is not seekable."); }
     public override void Flush() { }
-    public override long Seek(long offset, SeekOrigin origin) { throw new NotImplementedException(); }
-    public override void SetLength(long value) { throw new NotImplementedException(); }
+    public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException("BlockingMemoryStream is not seekable.");
+    public override void SetLength(long value) => throw new NotSupportedException("BlockingMemoryStream does not support resizing.");
 }

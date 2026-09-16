@@ -1399,7 +1399,7 @@ namespace GenerateDocumentationAndConfigFiles
                 DiagnosticSeverity.Warning => "warning",
                 DiagnosticSeverity.Info => "suggestion",
                 DiagnosticSeverity.Hidden => "silent",
-                _ => throw new NotImplementedException(severity.Value.ToString()),
+                _ => throw new ArgumentOutOfRangeException(nameof(severity), severity, "Unknown diagnostic severity."),
             };
         }
 

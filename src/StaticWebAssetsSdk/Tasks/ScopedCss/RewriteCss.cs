@@ -111,7 +111,7 @@ public class RewriteCss : Task
                     previousInsertionPosition += deleteContentEdit.DeleteLength;
                     break;
                 default:
-                    throw new NotImplementedException($"Unknown edit type: '{edit}'");
+                    throw new InvalidOperationException($"Unknown scope rewrite edit type: '{edit.GetType().FullName}'.");
             }
         }
 

@@ -24,7 +24,7 @@ namespace Microsoft.TemplateEngine.Core.Util
 
         public override bool CanWrite => false;
 
-        public override long Length => throw new NotImplementedException();
+        public override long Length => throw new NotSupportedException();
 
         public override long Position { get => throw new NotSupportedException(); set => throw new NotSupportedException(); }
 

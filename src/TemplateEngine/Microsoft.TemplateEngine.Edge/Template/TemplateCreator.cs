@@ -511,9 +511,10 @@ namespace Microsoft.TemplateEngine.Edge.Template
                 : base(parameterSet.ParameterDefinitions) => _parameterSet = parameterSet;
 
             public bool CheckIsParametersEvaluationCorrect(IGenerator generator, ILogger logger, bool throwOnError, out IReadOnlyList<string> paramsWithInvalidEvaluations) =>
-                throw new NotImplementedException();
+                throw new NotSupportedException("The obsolete parameter-set wrapper does not evaluate conditions.");
 
-            public InputDataSet Build(bool evaluateConditions, IGenerator generator, ILogger logger) => throw new NotImplementedException();
+            public InputDataSet Build(bool evaluateConditions, IGenerator generator, ILogger logger) =>
+                throw new NotSupportedException("The obsolete parameter-set wrapper cannot build input data.");
 
             public void SetParameterDefault(
                 IGenerator generator,
@@ -522,11 +523,13 @@ namespace Microsoft.TemplateEngine.Edge.Template
                 bool useHostDefaults,
                 bool isRequired,
                 List<string> paramsWithInvalidValues) =>
-                throw new NotImplementedException();
+                throw new NotSupportedException("The obsolete parameter-set wrapper does not set parameter defaults.");
 
-            public bool HasParameterValue(ITemplateParameter parameter) => throw new NotImplementedException();
+            public bool HasParameterValue(ITemplateParameter parameter) =>
+                throw new NotSupportedException("The obsolete parameter-set wrapper does not query parameter values.");
 
-            public void SetParameterEvaluation(ITemplateParameter parameter, EvaluatedInputParameterData evaluatedParameterData) => throw new NotImplementedException();
+            public void SetParameterEvaluation(ITemplateParameter parameter, EvaluatedInputParameterData evaluatedParameterData) =>
+                throw new NotSupportedException("The obsolete parameter-set wrapper does not set parameter evaluations.");
 
             public void SetParameterValue(ITemplateParameter parameter, object value, DataSource dataSource) => _parameterSet.ResolvedValues[parameter] = value;
         }

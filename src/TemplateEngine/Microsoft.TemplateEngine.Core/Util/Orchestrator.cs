@@ -69,7 +69,7 @@ namespace Microsoft.TemplateEngine.Core.Util
 
         protected virtual IGlobalRunSpec RunSpecLoader(Stream runSpec)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("RunSpecLoader must be provided by an orchestrator implementation.");
         }
 
         protected virtual bool TryGetBufferSize(IFile sourceFile, out int bufferSize)

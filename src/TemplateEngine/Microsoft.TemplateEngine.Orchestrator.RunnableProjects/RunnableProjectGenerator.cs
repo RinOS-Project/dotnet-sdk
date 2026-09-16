@@ -221,7 +221,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects
         [Obsolete("Replaced by ParameterSetBuilder.CreateWithDefaults", true)]
         IParameterSet IGenerator.GetParametersForTemplate(IEngineEnvironmentSettings environmentSettings, ITemplate template)
         {
-            throw new NotImplementedException("Replaced by ParameterSetBuilder.CreateWithDefaults");
+            throw new NotSupportedException("Replaced by ParameterSetBuilder.CreateWithDefaults");
         }
 
         /// <summary>

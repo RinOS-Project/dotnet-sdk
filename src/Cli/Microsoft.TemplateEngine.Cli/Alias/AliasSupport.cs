@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System.Text.RegularExpressions;
+using Microsoft.DotNet.Cli.Utils;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Cli.TabularOutput;
 
@@ -98,7 +99,7 @@ namespace Microsoft.TemplateEngine.Cli.Alias
             }
 
             TabularOutput<KeyValuePair<string, IReadOnlyList<string>>> formatter =
-                TabularOutput.For(
+                Microsoft.TemplateEngine.Cli.TabularOutput.TabularOutput.For(
                     new TabularOutputSettings(environmentSettings.Environment),
                     aliasesToShow.OrderBy(pair => pair.Key, StringComparer.OrdinalIgnoreCase))
                 .DefineColumn(pair => pair.Key, LocalizableStrings.AliasName, showAlways: true)

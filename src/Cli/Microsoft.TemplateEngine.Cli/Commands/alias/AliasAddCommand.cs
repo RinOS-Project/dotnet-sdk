@@ -12,7 +12,7 @@ namespace Microsoft.TemplateEngine.Cli.Commands
     internal sealed class AliasAddCommand(Func<ParseResult, ITemplateEngineHost> hostBuilder, NewAliasCommandDefinitionBase definition)
         : BaseCommand<AliasAddCommandArgs, NewAliasCommandDefinitionBase>(hostBuilder, definition)
     {
-        protected override Task<NewCommandStatus> ExecuteAsync(
+        protected override async Task<NewCommandStatus> ExecuteAsync(
             AliasAddCommandArgs args,
             IEngineEnvironmentSettings environmentSettings,
             TemplatePackageManager templatePackageManager,

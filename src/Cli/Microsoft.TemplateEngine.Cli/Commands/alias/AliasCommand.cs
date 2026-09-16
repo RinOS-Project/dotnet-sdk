@@ -22,7 +22,7 @@ namespace Microsoft.TemplateEngine.Cli.Commands
                 environmentSettings,
                 new AliasRegistry(environmentSettings),
                 aliasName: null,
-                definition.Name));
+                NewAliasCommandDefinition.Name));
 
         protected override AliasCommandArgs ParseContext(ParseResult parseResult) => new(parseResult);
     }

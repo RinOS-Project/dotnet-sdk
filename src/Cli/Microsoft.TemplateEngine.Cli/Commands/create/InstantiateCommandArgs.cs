@@ -76,8 +76,8 @@ namespace Microsoft.TemplateEngine.Cli.Commands
             : new(shortName: null, remainingArgs: [], newCommandArgs.ParseResult);
 
         internal static InstantiateCommandArgs FromTokens(IReadOnlyList<string> tokens, ParseResult parseResult)
-            => tokens is [var firstToken, .. var rest]
-            ? new(firstToken, rest, parseResult)
+            => tokens.Count > 0
+            ? new(tokens[0], tokens.Skip(1).ToArray(), parseResult)
             : new(shortName: null, remainingArgs: [], parseResult);
     }
 }

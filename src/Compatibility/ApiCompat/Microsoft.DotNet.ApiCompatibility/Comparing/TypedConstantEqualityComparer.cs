@@ -12,7 +12,30 @@ namespace Microsoft.DotNet.ApiCompatibility.Comparing
     public sealed class TypedConstantEqualityComparer(IEqualityComparer<ISymbol> symbolEqualityComparer) : IEqualityComparer<TypedConstant>
     {
         /// <inheritdoc />
-        public int GetHashCode([DisallowNull] TypedConstant obj) => throw new NotImplementedException();
+        public int GetHashCode([DisallowNull] TypedConstant obj)
+        {
+            var hash = new HashCode();
+            hash.Add(obj.Kind);
+            hash.Add(obj.Type is null ? 0 : symbolEqualityComparer.GetHashCode(obj.Type));
+
+            if (obj.Kind == TypedConstantKind.Array)
+            {
+                foreach (var value in obj.Values)
+                {
+                    hash.Add(GetHashCode(value));
+                }
+            }
+            else if (obj.Kind == TypedConstantKind.Type && obj.Value is INamedTypeSymbol namedType)
+            {
+                hash.Add(symbolEqualityComparer.GetHashCode(namedType));
+            }
+            else
+            {
+                hash.Add(obj.Value);
+            }
+
+            return hash.ToHashCode();
+        }
 
         /// <inheritdoc />
         public bool Equals(TypedConstant x, TypedConstant y)

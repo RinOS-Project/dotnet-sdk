@@ -12,7 +12,8 @@ namespace Microsoft.DotNet.ApiCompatibility.Comparing
     public sealed class NamedArgumentComparer(IEqualityComparer<TypedConstant> typedConstantEqualityComparer) : IEqualityComparer<KeyValuePair<string, TypedConstant>>
     {
         /// <inheritdoc />
-        public int GetHashCode([DisallowNull] KeyValuePair<string, TypedConstant> obj) => throw new NotImplementedException();
+        public int GetHashCode([DisallowNull] KeyValuePair<string, TypedConstant> obj)
+            => HashCode.Combine(obj.Key, typedConstantEqualityComparer.GetHashCode(obj.Value));
 
         /// <inheritdoc />
         public bool Equals(KeyValuePair<string, TypedConstant> x, KeyValuePair<string, TypedConstant> y) =>

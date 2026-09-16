@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis
                 ReportDiagnostic.Info => "suggestion",
                 ReportDiagnostic.Hidden => "silent",
                 ReportDiagnostic.Suppress => "none",
-                _ => throw new NotImplementedException(),
+                _ => throw new ArgumentOutOfRangeException(nameof(reportDiagnostic), reportDiagnostic, "Unknown report diagnostic value."),
             };
         }
 
@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis
                 ReportDiagnostic.Hidden => DiagnosticSeverity.Hidden,
                 ReportDiagnostic.Suppress => null,
                 ReportDiagnostic.Default => null,
-                _ => throw new NotImplementedException(),
+                _ => throw new ArgumentOutOfRangeException(nameof(reportDiagnostic), reportDiagnostic, "Unknown report diagnostic value."),
             };
         }
 

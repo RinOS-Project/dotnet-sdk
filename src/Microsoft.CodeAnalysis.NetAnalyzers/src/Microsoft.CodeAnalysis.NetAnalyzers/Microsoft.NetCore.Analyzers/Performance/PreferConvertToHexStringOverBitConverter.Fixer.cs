@@ -112,7 +112,7 @@ namespace Microsoft.NetCore.Analyzers.Performance
                             .WithAdditionalAnnotations(s_asSpanSymbolAnnotation),
                     // BitConverter.ToString(data, start, length).Replace("-", "") => Convert.ToHexString(data, start, length)
                     3 => generator.InvocationExpression(methodExpression, bitConverterArgumentsInParameterOrder.Select(a => Current(a.Value.Syntax)).ToArray()),
-                    _ => throw new NotImplementedException()
+                    _ => throw new InvalidOperationException("BitConverter.ToString replacement requires one to three arguments.")
                 };
 
                 // This branch is hit when string.ToLower* is used and Convert.ToHexStringLower is not available.

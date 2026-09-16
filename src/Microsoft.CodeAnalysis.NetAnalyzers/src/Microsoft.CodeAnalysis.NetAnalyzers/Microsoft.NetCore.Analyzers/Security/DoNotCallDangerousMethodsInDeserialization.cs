@@ -170,7 +170,7 @@ namespace Microsoft.NetCore.Analyzers.Security
                                         break;
 
                                     default:
-                                        throw new NotImplementedException();
+                                        throw new InvalidOperationException($"Unexpected operation kind in deserialization call graph: {operationContext.Operation.Kind}.");
                                 }
 
                                 calledMethods.TryAdd(calledSymbol, true);

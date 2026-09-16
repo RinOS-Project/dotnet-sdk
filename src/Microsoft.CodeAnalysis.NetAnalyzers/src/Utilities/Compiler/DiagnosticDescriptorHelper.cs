@@ -60,7 +60,7 @@ namespace Analyzer.Utilities
                     RuleLevel.Disabled => (DiagnosticSeverity.Warning, false),
                     RuleLevel.CandidateForRemoval => (DiagnosticSeverity.Warning, false),
                     RuleLevel.BuildError => (DiagnosticSeverity.Error, true),
-                    _ => throw new System.NotImplementedException(),
+                    _ => throw new System.ArgumentOutOfRangeException(nameof(ruleLevel), ruleLevel, "Unknown analyzer rule level."),
                 };
             }
 

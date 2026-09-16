@@ -645,7 +645,7 @@ namespace Analyzer.Utilities.Extensions
 
                 IPropertyReferenceOperation propertyReference => propertyReference.Instance,
 
-                _ => throw new NotImplementedException()
+                _ => throw new InvalidOperationException($"Operation kind {operation.Kind} has no instance.")
             };
 
             return instance?.WalkDownConversion().Type;

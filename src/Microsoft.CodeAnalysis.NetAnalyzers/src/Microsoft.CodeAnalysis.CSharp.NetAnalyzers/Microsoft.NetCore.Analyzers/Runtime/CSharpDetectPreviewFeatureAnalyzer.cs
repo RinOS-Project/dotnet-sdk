@@ -303,7 +303,9 @@ namespace Microsoft.NetCore.CSharp.Analyzers.Runtime
 
         protected override SyntaxNode? GetPreviewImplementsClauseSyntaxNodeForMethodOrProperty(ISymbol methodOrPropertySymbol, ISymbol previewSymbol)
         {
-            throw new System.NotImplementedException();
+            // C# reports the containing method symbol directly.  The implements-clause
+            // projection is only needed by the Visual Basic syntax model.
+            return null;
         }
     }
 }

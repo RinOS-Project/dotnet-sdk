@@ -560,7 +560,7 @@ namespace Analyzer.Utilities.Extensions
 
                 IEventSymbol eventSymbol => eventSymbol.OverriddenEvent,
 
-                _ => throw new NotImplementedException(),
+                _ => throw new InvalidOperationException($"Symbol kind {symbol.Kind} does not support overridden members."),
             };
         }
 

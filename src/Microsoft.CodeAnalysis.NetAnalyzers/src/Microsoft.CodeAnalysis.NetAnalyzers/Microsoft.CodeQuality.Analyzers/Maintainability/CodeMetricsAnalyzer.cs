@@ -252,7 +252,7 @@ namespace Microsoft.CodeQuality.Analyzers.Maintainability.CodeMetrics
                             SymbolKind.NamedType or SymbolKind.Method or SymbolKind.Field or SymbolKind.Property or SymbolKind.Event => true,
                             _ => false,
                         },
-                        _ => throw new NotImplementedException(),
+                        _ => throw new ArgumentOutOfRangeException(nameof(ruleId), ruleId, "Unknown code metrics rule."),
                     };
                 }
 
@@ -274,7 +274,7 @@ namespace Microsoft.CodeQuality.Analyzers.Maintainability.CodeMetrics
 
                         CA1506RuleId => symbolKind == SymbolKind.NamedType ? 95 : (uint)40,
 
-                        _ => throw new NotImplementedException(),
+                        _ => throw new ArgumentOutOfRangeException(nameof(ruleId), ruleId, "Unknown code metrics rule."),
                     };
                 }
             });

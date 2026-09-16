@@ -70,7 +70,7 @@ namespace Microsoft.NetCore.Analyzers.Security.Helpers
             }
             else
             {
-                throw new NotImplementedException("Unhandled case");
+                throw new InvalidOperationException("Insecure object graph result has no location source.");
             }
         }
 
@@ -91,7 +91,7 @@ namespace Microsoft.NetCore.Analyzers.Security.Helpers
             }
             else
             {
-                throw new NotImplementedException("Unhandled case");
+                throw new InvalidOperationException("Insecure object graph result has no display source.");
             }
         }
     }

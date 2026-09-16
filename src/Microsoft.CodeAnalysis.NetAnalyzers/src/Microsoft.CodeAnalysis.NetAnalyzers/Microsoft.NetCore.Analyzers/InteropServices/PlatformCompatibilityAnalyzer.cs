@@ -857,7 +857,7 @@ namespace Microsoft.NetCore.Analyzers.InteropServices
                         Callsite.AllPlatforms => OnlySupportedCsAllPlatforms,
                         Callsite.Reachable => OnlySupportedCsReachable,
                         Callsite.Unreachable => OnlySupportedCsUnreachable,
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentOutOfRangeException(nameof(callsite), callsite, "Unknown callsite classification."),
                     };
 
                 static bool IsDenyList(SmallDictionary<string, Versions>? callsiteAttributes) =>
@@ -943,7 +943,7 @@ namespace Microsoft.NetCore.Analyzers.InteropServices
                 {
                     Callsite.AllPlatforms => ObsoletedCsAllPlatforms,
                     Callsite.Reachable => ObsoletedCsReachable,
-                    _ => throw new NotImplementedException()
+                    _ => throw new ArgumentOutOfRangeException(nameof(callsite), callsite, "Obsolete diagnostics do not support this callsite classification."),
                 };
             }
 
@@ -955,7 +955,7 @@ namespace Microsoft.NetCore.Analyzers.InteropServices
                     {
                         Callsite.AllPlatforms => UnsupportedCsAllPlatforms,
                         Callsite.Reachable => UnsupportedCsReachable,
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentOutOfRangeException(nameof(callsite), callsite, "Unsupported diagnostics do not support this callsite classification."),
                     };
                 }
                 else
@@ -964,7 +964,7 @@ namespace Microsoft.NetCore.Analyzers.InteropServices
                     {
                         Callsite.AllPlatforms => SupportedCsAllPlatforms,
                         Callsite.Reachable => SupportedCsReachable,
-                        _ => throw new NotImplementedException()
+                        _ => throw new ArgumentOutOfRangeException(nameof(callsite), callsite, "Supported diagnostics do not support this callsite classification."),
                     };
                 }
             }

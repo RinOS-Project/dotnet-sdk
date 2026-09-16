@@ -22,7 +22,7 @@ namespace Microsoft.NetCore.CSharp.Analyzers.Runtime
             }
 
             public override TypeSyntax DefaultVisit(ISymbol symbol)
-                => throw new NotImplementedException();
+                => throw new InvalidOperationException($"Unsupported symbol kind for a C# type syntax: {symbol.Kind}.");
 
             public override TypeSyntax VisitAlias(IAliasSymbol symbol)
             {

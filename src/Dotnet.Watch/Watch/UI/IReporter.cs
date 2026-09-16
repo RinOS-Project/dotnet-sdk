@@ -91,6 +91,15 @@ internal sealed class LoggerFactory(IReporter reporter, LogLevel level) : ILogge
 {
     private sealed class Logger(IReporter reporter, LogLevel level, string categoryName) : ILogger
     {
+        private sealed class NoopScope : IDisposable
+        {
+            internal static readonly NoopScope Instance = new();
+
+            public void Dispose()
+            {
+            }
+        }
+
         public bool IsEnabled(LogLevel logLevel)
             => logLevel >= level;
 
@@ -119,7 +128,7 @@ internal sealed class LoggerFactory(IReporter reporter, LogLevel level) : ILogge
         }
 
         public IDisposable? BeginScope<TState>(TState state) where TState : notnull
-            => throw new NotImplementedException();
+            => NoopScope.Instance;
     }
 
     public void Dispose()
@@ -130,7 +139,7 @@ internal sealed class LoggerFactory(IReporter reporter, LogLevel level) : ILogge
         => new Logger(reporter, level, categoryName);
 
     public void AddProvider(ILoggerProvider provider)
-        => throw new NotImplementedException();
+        => throw new NotSupportedException("Reporter-backed LoggerFactory does not accept external logger providers.");
 }
 
 internal abstract class MessageDescriptor(string? format, Emoji emoji, LogLevel level, EventId id)

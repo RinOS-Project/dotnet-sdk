@@ -76,7 +76,7 @@ internal sealed class DockerCli
         string? command = await GetCommandAsync(cancellationToken);
         if (command is null)
         {
-            throw new NotImplementedException(Resource.FormatString(Strings.ContainerRuntimeProcessCreationFailed, Commands));
+            throw new InvalidOperationException(Resource.FormatString(Strings.ContainerRuntimeProcessCreationFailed, Commands));
         }
 
         _fullCommandPath = FindFullPathFromPath(command);
@@ -110,7 +110,7 @@ internal sealed class DockerCli
         };
 
         using Process? loadProcess = Process.Start(loadInfo) ??
-            throw new NotImplementedException(Resource.FormatString(Strings.ContainerRuntimeProcessCreationFailed, commandPath));
+            throw new InvalidOperationException(Resource.FormatString(Strings.ContainerRuntimeProcessCreationFailed, commandPath));
 
         // Call the delegate to write the image to the stream
         await writeStreamFunc(image, sourceReference, destinationReference, loadProcess.StandardInput.BaseStream, cancellationToken)
@@ -174,7 +174,7 @@ internal sealed class DockerCli
                 case PodmanCommand:
                     return commandPathWasUnknown || await TryRunVersionCommandAsync(PodmanCommand, cancellationToken);
                 default:
-                    throw new NotImplementedException($"{command} is an unknown command.");
+                    throw new ArgumentOutOfRangeException(nameof(command), command, "Unknown container runtime command.");
             }
         }
         catch (Exception ex)
@@ -282,8 +282,6 @@ internal sealed class DockerCli
     }
 #endif
 
-    private static void Proc_OutputDataReceived(object sender, DataReceivedEventArgs e) => throw new NotImplementedException();
-
 #if NET
     public static async Task WriteImageToStreamAsync(BuiltImage image, SourceImageReference sourceReference, DestinationImageReference destinationReference, Stream imageStream, CancellationToken cancellationToken)
     {
@@ -350,7 +348,7 @@ internal sealed class DockerCli
             }
             else
             {
-                throw new NotImplementedException(Resource.FormatString(
+                throw new InvalidOperationException(Resource.FormatString(
                     nameof(Strings.MissingLinkToRegistry),
                     d.Digest,
                     sourceReference.Registry?.ToString() ?? "<null>"));

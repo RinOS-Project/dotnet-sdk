@@ -120,7 +120,7 @@ internal static class ContainerArchive
         {
             if (sourceReference.Registry is not { } registry)
             {
-                throw new NotImplementedException(Resource.FormatString(
+                throw new InvalidOperationException(Resource.FormatString(
                     nameof(Strings.MissingLinkToRegistry),
                     descriptor.Digest,
                     sourceReference.Registry?.ToString() ?? "<null>"));

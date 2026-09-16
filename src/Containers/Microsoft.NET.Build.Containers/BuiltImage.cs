@@ -60,7 +60,7 @@ internal readonly struct BuiltImage
     {
         get
         {
-            List<ManifestLayer> layersNode = Layers ?? throw new NotImplementedException("Tried to get layer information but there is no layer node?");
+            List<ManifestLayer> layersNode = Layers ?? throw new InvalidOperationException("Tried to get layer information but there is no layer node.");
             foreach (ManifestLayer layer in layersNode)
             {
                 yield return new(layer.mediaType, layer.digest, layer.size);

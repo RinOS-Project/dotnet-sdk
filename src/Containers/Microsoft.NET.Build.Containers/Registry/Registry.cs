@@ -215,7 +215,7 @@ internal sealed class Registry
                 runtimeIdentifier,
                 manifestPicker,
                 cancellationToken).ConfigureAwait(false),
-            var unknownMediaType => throw new NotImplementedException(Resource.FormatString(
+            var unknownMediaType => throw new NotSupportedException(Resource.FormatString(
                 nameof(Strings.UnknownMediaType),
                 repositoryName,
                 reference,
@@ -640,7 +640,7 @@ internal sealed class Registry
                 }
                 else
                 {
-                    throw new NotImplementedException(Resource.GetString(nameof(Strings.MissingLinkToRegistry)));
+                    throw new InvalidOperationException(Resource.GetString(nameof(Strings.MissingLinkToRegistry)));
                 }
             }
         };

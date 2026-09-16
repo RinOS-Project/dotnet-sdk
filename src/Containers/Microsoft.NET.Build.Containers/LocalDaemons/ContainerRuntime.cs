@@ -209,6 +209,6 @@ internal sealed class ContainerRuntime : ILocalRegistry
                 ? $"{MacOSContainerCommand}/{FallbackCommands}"
                 : FallbackCommands;
 
-    private NotImplementedException CreateRuntimeNotFoundException()
+    private InvalidOperationException CreateRuntimeNotFoundException()
         => new(Resource.FormatString(Strings.ContainerRuntimeProcessCreationFailed, GetCommandsForCurrentPlatform()));
 }

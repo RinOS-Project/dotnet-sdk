@@ -90,13 +90,16 @@ namespace Microsoft.TemplateEngine.Utils
         {
         }
 
-        // stub that will be built out soon.
+        // Keep the obsolete host projection compatible with the active host defaults.
         public virtual bool TryGetHostParamDefault(string paramName, out string value)
         {
             switch (paramName)
             {
                 case "HostIdentifier":
                     value = HostIdentifier;
+                    return true;
+                case "WorkingDirectory":
+                    value = Environment.CurrentDirectory;
                     return true;
                 default:
                     break;

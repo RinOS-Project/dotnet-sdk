@@ -53,7 +53,7 @@ namespace Microsoft.TemplateEngine.Edge
 
         public ILoggerFactory LoggerFactory { get; }
 
-        // stub that will be built out soon.
+        // Resolve the built-in host parameters before consulting custom defaults.
         public virtual bool TryGetHostParamDefault(string paramName, out string? value)
         {
             switch (paramName)
